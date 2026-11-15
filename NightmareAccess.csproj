@@ -1,0 +1,120 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DebugType>portable</DebugType>
+    <RootNamespace>NightmareAccess</RootNamespace>
+    <AssemblyName>NightmareAccess</AssemblyName>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyVersion>1.1.0.6</AssemblyVersion>
+    <FileVersion>1.1.0.6</FileVersion>
+    <Nullable>disable</Nullable>
+    <Deterministic>true</Deterministic>
+    <DefaultItemExcludes>$(DefaultItemExcludes);NightmareAccess.Tests\**</DefaultItemExcludes>
+
+    <HKPath Condition="'$(HKPath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Hollow Knight</HKPath>
+    <HKManaged>$(HKPath)\hollow_knight_Data\Managed</HKManaged>
+    <HKMods>$(HKManaged)\Mods</HKMods>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(HKManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PlayMaker">
+      <HintPath>$(HKManaged)\PlayMaker.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(HKManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(HKManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>$(HKManaged)\UnityEngine.Physics2DModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(HKManaged)\UnityEngine.AudioModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(HKManaged)\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(HKManaged)\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(HKManaged)\UnityEngine.UIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(HKManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(HKManaged)\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour">
+      <HintPath>$(HKManaged)\MonoMod.RuntimeDetour.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>$(HKManaged)\MonoMod.Utils.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ItemChanger">
+      <HintPath>$(HKMods)\ItemChanger\ItemChanger.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="MenuChanger">
+      <HintPath>$(HKMods)\MenuChanger\MenuChanger.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Satchel">
+      <HintPath>$(HKMods)\Satchel\Satchel.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RandomizerMod">
+      <HintPath>$(HKMods)\Randomizer 4\RandomizerMod.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RandomizerCore">
+      <HintPath>$(HKMods)\RandomizerCore\RandomizerCore.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RandomizerCore.Json">
+      <HintPath>$(HKMods)\RandomizerCore.Json\RandomizerCore.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RandoSettingsManager" Condition="Exists('$(HKMods)\RandoSettingsManager\RandoSettingsManager.dll')">
+      <HintPath>$(HKMods)\RandoSettingsManager\RandoSettingsManager.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="YetAnotherRandoConnection" Condition="Exists('$(HKMods)\YetAnotherRandoConnection\YetAnotherRandoConnection.dll')">
+      <HintPath>$(HKMods)\YetAnotherRandoConnection\YetAnotherRandoConnection.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>NightmareAccess.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <MakeDir Directories="$(HKMods)\$(TargetName)" />
+    <Copy SourceFiles="$(TargetPath);$(TargetDir)$(TargetName).pdb" DestinationFolder="$(HKMods)\$(TargetName)" />
+    <Message Text="Mod copied to $(HKMods)\$(TargetName)" Importance="high" />
+  </Target>
+</Project>

@@ -1,0 +1,60 @@
+<Manifest>
+    <!-- REQUIRED: Current mod installers use this as the foldername the mod is stored in, inside the game files -->
+    <Name>NightmareAccess</Name>
+    <!-- OPTIONAL: Display name in mod installers -->
+    <DisplayName>Nightmare Access</DisplayName>
+    <!-- REQUIRED: Used in mod installers -->
+    <Description>Adds randomized access requirements (Geo, Eggs, Essence, etc.) to items and locations.</Description>
+    <!-- REQUIRED: Used for update checks -->
+    <Version>1.1.0.6</Version>
+    <!-- REQUIRED: Single multiplatform link with SHA256 hash -->
+    <Link SHA256="0000000000000000000000000000000000000000000000000000000000000000"><![CDATA[https://github.com/YourUsername/NightmareAccess/releases/download/v1.1.0.6/NightmareAccess.zip]]></Link>
+    <!-- REQUIRED: Mandatory mod dependencies -->
+    <Dependencies>
+        <Dependency>ItemChanger</Dependency>
+        <Dependency>MenuChanger</Dependency>
+        <Dependency>Randomizer 4</Dependency>
+        <Dependency>Satchel</Dependency>
+    </Dependencies>
+    <!-- REQUIRED: Source code repository -->
+    <Repository>
+        <![CDATA[https://github.com/YourUsername/NightmareAccess]]>
+    </Repository>
+    <!-- OPTIONAL: Raw readme link -->
+    <ReadMe>
+        <![CDATA[https://github.com/YourUsername/NightmareAccess/raw/refs/heads/main/README.md]]>
+    </ReadMe>
+    <!-- OPTIONAL: Issues tracker -->
+    <Issues>
+    </Issues>
+    <!-- OPTIONAL: Optional integrations -->
+    <Integrations>
+        <Integration>AccessRandomizer</Integration>
+        <Integration>AlphabetRando</Integration>
+        <Integration>BenchRando</Integration>
+        <Integration>BreakableWallRandomizer</Integration>
+        <Integration>CombatRandomizer</Integration>
+        <Integration>CorpseDreamRando</Integration>
+        <Integration>CurseRandomizer</Integration>
+        <Integration>DarknessRandomizer</Integration>
+        <Integration>ExtraRando</Integration>
+        <Integration>Fishing</Integration>
+        <Integration>GodhomeRandomizer</Integration>
+        <Integration>LoreRandomizer</Integration>
+        <Integration>MoreLocations</Integration>
+        <Integration>MoreStags</Integration>
+        <Integration>RandoPlus</Integration>
+        <Integration>RandoSettingsManager</Integration>
+        <Integration>RgbRando</Integration>
+        <Integration>RopeRando</Integration>
+        <Integration>TheGloryOfBeingAFoolRandomizer</Integration>
+        <Integration>YetAnotherRandoConnection</Integration>
+    </Integrations>
+    <Tags>
+        <Tag>Gameplay</Tag>
+        <Tag>LLM-Assisted</Tag>
+    </Tags>
+    <Authors>
+        <Author>{Pikatyu8}</Author>
+    </Authors>
+</Manifest>

@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+
+    <HKPath Condition="'$(HKPath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Hollow Knight</HKPath>
+    <HKManaged>$(HKPath)\hollow_knight_Data\Managed</HKManaged>
+    <HKMods>$(HKManaged)\Mods</HKMods>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="10.1.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NightmareAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(HKManaged)\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MMHOOK_Assembly-CSharp" Condition="Exists('$(HKManaged)\MMHOOK_Assembly-CSharp.dll')">
+      <HintPath>$(HKManaged)\MMHOOK_Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MMHOOK_PlayMaker" Condition="Exists('$(HKManaged)\MMHOOK_PlayMaker.dll')">
+      <HintPath>$(HKManaged)\MMHOOK_PlayMaker.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(HKManaged)\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayMaker">
+      <HintPath>$(HKManaged)\PlayMaker.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(HKManaged)\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(HKManaged)\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="ItemChanger">
+      <HintPath>$(HKMods)\ItemChanger\ItemChanger.dll</HintPath>
+    </Reference>
+    <Reference Include="MenuChanger">
+      <HintPath>$(HKMods)\MenuChanger\MenuChanger.dll</HintPath>
+    </Reference>
+    <Reference Include="Satchel">
+      <HintPath>$(HKMods)\Satchel\Satchel.dll</HintPath>
+    </Reference>
+    <Reference Include="RandomizerMod">
+      <HintPath>$(HKMods)\Randomizer 4\RandomizerMod.dll</HintPath>
+    </Reference>
+    <Reference Include="RandomizerCore">
+      <HintPath>$(HKMods)\RandomizerCore\RandomizerCore.dll</HintPath>
+    </Reference>
+    <Reference Include="RandomizerCore.Json">
+      <HintPath>$(HKMods)\RandomizerCore.Json\RandomizerCore.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
