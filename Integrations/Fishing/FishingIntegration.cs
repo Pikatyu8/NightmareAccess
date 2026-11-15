@@ -44,6 +44,11 @@ namespace NightmareAccess.Integrations.Fishing
             return null;
         }
 
+        public override bool SupportsPerItemCostTags(string locationName, AbstractPlacement placement)
+        {
+            return !string.IsNullOrEmpty(locationName) && locationName.StartsWith(LocationPrefix, StringComparison.Ordinal);
+        }
+
         public override bool TryApplyCost(
             string locationName,
             AbstractPlacement placement,

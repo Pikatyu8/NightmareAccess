@@ -261,6 +261,16 @@ namespace NightmareAccess.Integrations
             return null;
         }
 
+        public static bool SupportsPerItemCostTags(string locationName, AbstractPlacement placement)
+        {
+            EnsureBuiltInRegistered();
+            foreach (IIntegration integration in Integrations)
+            {
+                if (integration.SupportsPerItemCostTags(locationName, placement)) return true;
+            }
+            return false;
+        }
+
         public static bool TryApplyCost(
             string locationName,
             AbstractPlacement placement,

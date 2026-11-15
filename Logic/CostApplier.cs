@@ -97,6 +97,21 @@ namespace NightmareAccess.Logic
                     break;
 
                 case RequirementScope.PerObjectGroup:
+                    if (placement is IMultiCostPlacement || IntegrationRegistry.SupportsPerItemCostTags(locName, placement))
+                    {
+                        foreach (AbstractItem item in placement.Items)
+                        {
+                            string itemGroupKey = NightmareLogicHandler.GetItemTypeGroup(item.name);
+                            if (NightmareLogicHandler.ItemTypeConditions.TryGetValue(itemGroupKey, out var itemGroupCond)
+                                && itemGroupCond != null)
+                            {
+                                var tag = item.GetOrAddTag<CostTag>();
+                                tag.Cost = CombineCost(tag.Cost, new NightmareAccessCost(itemGroupCond));
+                            }
+                        }
+                        break;
+                    }
+
                     AbstractItem groupFirst = placement.Items.FirstOrDefault();
                     if (groupFirst == null) break;
                     string groupKey = NightmareLogicHandler.GetItemTypeGroup(groupFirst.name);
@@ -213,8 +228,20 @@ namespace NightmareAccess.Logic
                 foreach (var kvp in placements.OrderBy(k => k.Key, StringComparer.Ordinal))
                 {
                     if (!CanPlacementAcceptCost(kvp.Key, kvp.Value)) continue;
-                    AbstractItem firstItem = kvp.Value.Items.FirstOrDefault();
-                    if (firstItem != null) ResolveObjectGroupCondition(firstItem.name);
+
+                    if (kvp.Value is IMultiCostPlacement
+                        || IntegrationRegistry.SupportsPerItemCostTags(kvp.Key, kvp.Value))
+                    {
+                        foreach (AbstractItem item in kvp.Value.Items)
+                        {
+                            ResolveObjectGroupCondition(item.name);
+                        }
+                    }
+                    else
+                    {
+                        AbstractItem firstItem = kvp.Value.Items.FirstOrDefault();
+                        if (firstItem != null) ResolveObjectGroupCondition(firstItem.name);
+                    }
                 }
             }
             else if (ctx != null)

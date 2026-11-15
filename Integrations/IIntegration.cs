@@ -38,6 +38,7 @@ namespace NightmareAccess.Integrations
 
         // Placement & Cost Application
         bool? CanPlacementAcceptCost(string locationName, AbstractPlacement placement);
+        bool SupportsPerItemCostTags(string locationName, AbstractPlacement placement);
         bool TryApplyCost(
             string locationName,
             AbstractPlacement placement,
@@ -88,6 +89,7 @@ namespace NightmareAccess.Integrations
         public virtual bool IsItemSelfConflicting(string itemName, AccessConditionType conditionType, bool isGroupMode) => false;
 
         public virtual bool? CanPlacementAcceptCost(string locationName, AbstractPlacement placement) => null;
+        public virtual bool SupportsPerItemCostTags(string locationName, AbstractPlacement placement) => false;
         public virtual bool TryApplyCost(
             string locationName,
             AbstractPlacement placement,

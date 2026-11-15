@@ -723,6 +723,69 @@ namespace NightmareAccess.Tests
             }
         }
 
+        [Fact]
+        public void CostApplier_PerObjectGroup_AppliesDistinctItemCostTagsForMultiItemFishingSpot()
+        {
+            var settings = new NightmareAccessSettings
+            {
+                Enabled = true,
+                Scope = RequirementScope.PerObjectGroup,
+                RequirementChance = 100
+            };
+            foreach (var prop in typeof(NightmareAccessSettings).GetProperties())
+            {
+                if (prop.PropertyType == typeof(bool) && prop.Name.StartsWith("Allow", StringComparison.Ordinal))
+                {
+                    prop.SetValue(settings, false, null);
+                }
+            }
+            settings.AllowGeo = true;
+            settings.MinGeo = 10;
+            settings.MaxGeo = 100;
+
+            var gs = new GenerationSettings { Seed = 424 };
+            var lmb = new LogicManagerBuilder();
+            lmb.GetOrAddTerm("GEO", TermType.SignedByte);
+            lmb.GetOrAddTerm("Can_Replenish_Geo", TermType.SignedByte);
+            lmb.GetOrAddTerm("GRUBS", TermType.SignedByte);
+            lmb.AddWaypoint(new RawWaypointDef("Start_State", "TRUE", stateless: false));
+            lmb.AddWaypoint(new RawWaypointDef("Can_Replenish_Geo", "TRUE", stateless: true));
+            lmb.AddItem(new SingleItem("Grub", new TermValue(lmb.GetTerm("GRUBS"), 1)));
+            lmb.AddItem(new EmptyItem("One_Geo"));
+            lmb.AddLogicDef(new RawLogicDef("Fishing_Spot-Lake_of_Unn", "TRUE"));
+
+            var lm = new LogicManager(lmb);
+            var ctx = new RandoModContext(lm) { GenerationSettings = gs };
+            ctx.itemPlacements.Add(new ItemPlacement(new RandoModItem { item = lm.GetItemStrict("One_Geo") }, new RandoModLocation { logic = lm.GetLogicDefStrict("Fishing_Spot-Lake_of_Unn") }));
+            ctx.itemPlacements.Add(new ItemPlacement(new RandoModItem { item = lm.GetItemStrict("Grub") }, new RandoModLocation { logic = lm.GetLogicDefStrict("Fishing_Spot-Lake_of_Unn") }));
+
+            var fishSpot = new AutoPlacement("Fishing_Spot-Lake_of_Unn")
+            {
+                Location = new TestAutoLocation("Fishing_Spot-Lake_of_Unn", supportsCost: false)
+            };
+            var fishGeo = new TestItem("One_Geo");
+            var fishGrub = new TestItem("Grub");
+            fishSpot.Add(fishGeo);
+            fishSpot.Add(fishGrub);
+
+            var placements = new Dictionary<string, AbstractPlacement>(StringComparer.Ordinal)
+            {
+                ["Fishing_Spot-Lake_of_Unn"] = fishSpot
+            };
+
+            NightmareLogicHandler.ItemTypeConditions["Geo"] = new AccessCondition(AccessConditionType.Geo, 25);
+            NightmareLogicHandler.ItemTypeConditions["Grubs"] = new AccessCondition(AccessConditionType.Geo, 80);
+            NightmareLogicHandler.IsSaveActive = true;
+            NightmareLogicHandler.ActiveScope = RequirementScope.PerObjectGroup;
+
+            CostApplier.ApplyToPlacements(placements, ctx, settings, gs);
+
+            Assert.Null(fishSpot.GetTag<CostTag>());
+            Assert.Equal(25, NightmareAccessCost.Find(fishGeo.GetTag<CostTag>()?.Cost)?.Condition.RequiredAmount);
+            Assert.Equal(80, NightmareAccessCost.Find(fishGrub.GetTag<CostTag>()?.Cost)?.Condition.RequiredAmount);
+            Assert.True(NightmareLogicHandler.LastVerificationReport.IsCompletable);
+        }
+
         private sealed class DummyReplacementIntegration : ModIntegrationBase
         {
             public override string Id => "AlphabetRando";
